@@ -10,3 +10,6 @@ exports.allAccess = (req, res) => {
   exports.employeeBoard = (req, res) => {
     res.status(200).send("Employee Content.");
   };
+  exports.productsBoard = (req, res) => {
+    res.status(200).send("Products Content.");
+  };

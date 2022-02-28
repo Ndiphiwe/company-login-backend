@@ -1,11 +1,12 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
-const Product = db.products;
+const Product = db.product;
 const Role = db.role;
 const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { product } = require("../models");
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
@@ -31,6 +32,28 @@ exports.signup = (req, res) => {
         user.setRoles([1]).then(() => {
           res.send({ message: "User was registered successfully!" });
         });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
+};
+exports.addProduct = (req, res) => {
+  // Save Products to Database
+  Product.create({
+    image: req.body.image,
+    title: req.body.title,
+    category: req.body.category,
+    description: req.body.description,
+    img: req.body.img,
+    price: req.body.price
+  })
+    .then(product => {
+      if (req.body.title == null || req.body.title == ""){
+        res.send({ message: "Please add all item details" });
+      } else {
+        // user role = 1
+          res.send({ message: "Product added successfully!" });
       }
     })
     .catch(err => {
@@ -78,27 +101,16 @@ exports.signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
-exports.addProduct = (req, res) => {
-  // Save User to Database
-  Product.create({
-    // id: req.body.id,
-    title: req.body.title,
-    category: req.body.category,
-    description: req.body.description,
-    price: req.body.price,
-    image: req.body.image,
-  })
-    .then(product => {
-      if (!title || !category || !description || !price || !image){
-        res.send({ message: "Please add all item details" });
-      } else {
-        // user role = 1
-        product.then(() => {
-          res.send({ message: "Product added successfully!" });
-        });
-      }
+
+exports.findAll = (req, res) => {
+  Product.findAll()
+    .then(data => {
+      res.send(data);
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
     });
 };

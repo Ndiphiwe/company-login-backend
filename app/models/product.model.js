@@ -1,9 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
     const Product = sequelize.define("products", {
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true
-        },
+    image: {
+        type: Sequelize.STRING
+    },
     title: {
         type: Sequelize.STRING
     },
@@ -13,11 +12,11 @@ module.exports = (sequelize, Sequelize) => {
     description: {
         type: Sequelize.STRING
     },
+    img: {
+        type: Sequelize.STRING
+    },
     price: {
         type: Sequelize.INTEGER
-    },
-    image: {
-        type: Sequelize.BLOB
     }
     });
     return Product;
